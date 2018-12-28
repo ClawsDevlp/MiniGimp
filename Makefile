@@ -1,12 +1,14 @@
 CC=gcc
 CFLAGS=-Wall
+SRC=./src/
+BIN=./bin/
 
 
-mon_gimp: main.o image.o
+$(BIN)minigimp: $(SRC)main.o $(SRC)image.o
 		$(CC) -o $@ $^
 
-main.o: main.c image.h
+main.o: $(SRC)main.c $(SRC)image.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.o
+	rm -rf $(SRC)*.o
