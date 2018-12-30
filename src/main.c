@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "image.h"
+#include "lut.h"
 
 int main(int argc, char *argv[]){
 	if(argc < 1){
