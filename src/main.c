@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "image.h"
 #include "lut.h"
 
@@ -15,8 +16,9 @@ int main(int argc, char *argv[]){
 		return EXIT_FAILURE;
 	};
 
-    Image image;
-	initializeImage(i,image);
+	Image image;
+	initializeImage(i, &image);
+	//newFileImage("gerbille.ppm", &image);
 
 	fclose(i);
 

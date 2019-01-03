@@ -5,9 +5,13 @@ typedef struct Image {
 	char code[2];
 	int hauteur;
 	int largeur;
-	unsigned char pixels[];
+	int profondeur;
+	unsigned char *pixels[];
 } Image;
 
-void initializeImage(FILE *i, Image image);
-	
+void initializeImage(FILE *i, Image *image);
+int newFileImage(char nom[], Image *image);
+int allocationImage(Image *image, int hauteur, int largeur);
+void freeImage(Image *image);
+
 #endif
