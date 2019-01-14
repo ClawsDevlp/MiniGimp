@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 	Image *image = initializeImage(i);
 	Lut lut;
 
-	dimLum(&lut, 30);
+	dimCon(&lut,40);
 	appliqueLut(image, &lut);
 
 	newFileImage("gerbille.ppm", image);

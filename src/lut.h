@@ -22,5 +22,9 @@ void appliqueLut(Image *image, Lut *lut);
 unsigned char convertToUnsignedChar(int num);
 void addLum(Lut *lut, int parametre);
 void dimLum(Lut *lut, int parametre);
+void invert(Lut *lut);
+void sepia(Lut *lut);
+void addCon(Lut *lut, int parametre);
+void dimCon(Lut *lut, int parametre);
 
 #endif

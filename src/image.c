@@ -58,17 +58,3 @@ void freeImage(Image *image) {
 	free(image);
 	}
 }
-
-
-
-
-
-/*alloue assez de place à l'image
-int allocationImage(Image *image, int hauteur, int largeur){
-	image = malloc(sizeof(Image) + 3*hauteur*largeur*sizeof(unsigned char));
-	if (image==NULL) {
-		fprintf(stderr,"Not enough memory!\n");
-		return EXIT_FAILURE;
-	}
-	return EXIT_SUCCESS;
-}*/
