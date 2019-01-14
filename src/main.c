@@ -16,9 +16,14 @@ int main(int argc, char *argv[]){
 		return EXIT_FAILURE;
 	};
 
-	Image image;
-	initializeImage(i, &image);
-	//newFileImage("gerbille.ppm", &image);
+	Image *image = initializeImage(i);
+	Lut lut;
+
+	dimLum(&lut, 30);
+	appliqueLut(image, &lut);
+
+	newFileImage("gerbille.ppm", image);
+	freeImage(image);
 
 	fclose(i);
 

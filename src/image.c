@@ -4,15 +4,16 @@
 #include "image.h"
 
 // Initialisation de l'image
-void initializeImage(FILE *i, Image *image){
+Image * initializeImage(FILE *i){
+	Image *image;
 
 	char code[2];
 	int hauteur;
 	int largeur;
 
-	fscanf(i,"%s",code);
+	fscanf(i,"%s\n",code);
 	fscanf(i,"%d",&hauteur);
-	fscanf(i,"%d",&largeur);
+	fscanf(i,"%d\n",&largeur);
 
 	//alloue assez de place à l'image
 	image = malloc(sizeof(Image) + 3*hauteur*largeur*sizeof(unsigned char));
@@ -22,13 +23,13 @@ void initializeImage(FILE *i, Image *image){
 	}
 
 	strcpy(image->code, code);
-	fscanf(i,"%d",&image->profondeur);
+	fscanf(i,"%d\n",&image->profondeur);
 	image->hauteur = hauteur;
 	image->largeur = largeur;
 	
-	fread(image->pixels, sizeof (unsigned char), largeur*hauteur * 3, i);
+	fread(image->pixels, sizeof (unsigned char), largeur*hauteur*3, i);
 
-	newFileImage("gerbille.ppm", image);
+	return image;
 }
 
 //Ecriture de la nouvelle image
@@ -42,7 +43,7 @@ int newFileImage(char nom[], Image *image){
 		fprintf(fichier,"%s\n",image->code);
 		fprintf(fichier,"%d %d\n",image->hauteur, image->largeur);
 		fprintf(fichier,"%d\n",image->profondeur);
-		fprintf(fichier,"%s\n","#Made by Andrea & Clara");
+		//fprintf(fichier,"%s","#Made by Andrea & Clara");
 		fwrite(image->pixels,sizeof(unsigned char),image->largeur*image->hauteur*3,fichier);
 		fclose(fichier);
 	}
@@ -51,15 +52,16 @@ int newFileImage(char nom[], Image *image){
 
 void freeImage(Image *image) {
   if(image != NULL) {
-    if(image->pixels != NULL)	{
-	    free(image->pixels);
-    	*image->pixels = NULL;
-    }
-
     image->largeur  = 0;
     image->hauteur = 0;
+	
+	free(image);
 	}
 }
+
+
+
+
 
 /*alloue assez de place à l'image
 int allocationImage(Image *image, int hauteur, int largeur){
