@@ -32,10 +32,10 @@ Image * initializeImage(FILE *i){
 	return image;
 }
 
-//Ecriture de la nouvelle image
+// Ecriture de la nouvelle image
 int newFileImage(char nom[], Image *image){
 	FILE* fichier = NULL;
-	char new[40] = "images/new";
+	char new[40] = "images/";
 	strcat(new,nom);
 	fichier = fopen(new, "w");
 
@@ -50,6 +50,7 @@ int newFileImage(char nom[], Image *image){
 	return EXIT_SUCCESS;
 }
 
+// Libere l'espace de l'image
 void freeImage(Image *image) {
   if(image != NULL) {
     image->largeur  = 0;
