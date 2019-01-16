@@ -50,12 +50,18 @@ void invert(Lut *lut){
     }
 }
 
-void sepia(Lut *lut){
-    for(int i=0; i<=255; i++){
-        lut->rouge[i] = i*0.398 + i*0.769 + i*0.189;
-        lut->vert[i] = i*0.349 + i*0.686 + i*0.168;
-        lut->bleu[i] = i*0.272 + i*0.534 + i*0.131;
-    }
+void sepia(Image *image){
+    int rouge; int vert; int bleu;
+    for(int i=0; i< image->hauteur; i++){
+		for (int j=0; j< image->largeur; j++){
+            rouge = image->pixels[image->largeur*3*i+3*j+0];
+            vert = image->pixels[image->largeur*3*i+3*j+1];
+            bleu = image->pixels[image->largeur*3*i+3*j+2];
+            image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(rouge*0.393 + vert*0.769 + bleu*0.189);
+            image->pixels[image->largeur*3*i+3*j+1] = convertToUnsignedChar(rouge*0.349 + vert*0.686 + bleu*0.168);
+            image->pixels[image->largeur*3*i+3*j+2] = convertToUnsignedChar(rouge*0.272 + vert*0.534 + bleu*0.131);
+		}
+	}
 }
 
 void addCon(Lut *lut, int parametre){
@@ -71,6 +77,19 @@ void addCon(Lut *lut, int parametre){
     }
 }
 
+void seuil(Lut *lut){
+    for(int i=0; i<=128; i++){
+        lut->rouge[i] = 0;
+        lut->vert[i] = 0;
+        lut->bleu[i] = 0;
+    }
+    for(int i=129; i<=255; i++){
+        lut->rouge[i] = 255;
+        lut->vert[i] = 255;
+        lut->bleu[i] = 255;
+    }
+}
+
 void dimCon(Lut *lut, int parametre){
     for(int i=0; i<=128; i++){
         lut->rouge[i] = i+parametre;
@@ -83,6 +102,19 @@ void dimCon(Lut *lut, int parametre){
         lut->bleu[i] = i-parametre;
     }
 }
+
+void noirEtBlanc(Image *image){
+    int gris;
+    for(int i=0; i< image->hauteur; i++){
+		for (int j=0; j< image->largeur; j++){
+            gris = image->pixels[image->largeur*3*i+3*j+0]*0.299 + image->pixels[image->largeur*3*i+3*j+1]*0.587 + image->pixels[image->largeur*3*i+3*j+2]*0.114;
+            image->pixels[image->largeur*3*i+3*j+0] = gris;
+            image->pixels[image->largeur*3*i+3*j+1] = gris;
+            image->pixels[image->largeur*3*i+3*j+2] = gris;
+		}
+	}
+}
+
 
 /*tr = 0.393R + 0.769G + 0.189B
 tg = 0.349R + 0.686G + 0.168B
