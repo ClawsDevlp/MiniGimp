@@ -5,7 +5,7 @@
 
 
 void appliqueLut(Image *image, Lut *lut){
-    for(int i=0; i< image->hauteur; i++){
+    for (int i=0; i< image->hauteur; i++){
 		for (int j=0; j< image->largeur; j++){
 			image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(lut->rouge[image->pixels[image->largeur*3*i+3*j+0]]);
 			image->pixels[image->largeur*3*i+3*j+1] = convertToUnsignedChar(lut->vert[image->pixels[image->largeur*3*i+3*j+1]]);
@@ -15,35 +15,44 @@ void appliqueLut(Image *image, Lut *lut){
 }
 
 unsigned char convertToUnsignedChar(int num){
-    if(num<0) {
+    if (num < 0) {
         num = 0;
-    } else if (num>255) {
+    } else if (num > 255) {
         num = 255;
     }
     return (unsigned char) num;
 }
 
+
+void initializeLut(Lut *lut){
+    for (int i=0; i<=255; i++){
+        lut->rouge[i] = i;
+        lut->vert[i] = i;
+        lut->bleu[i] = i;
+    }
+}
+
 void addLum(Lut *lut, int parametre){
-    for(int i=0; i<=255; i++){
-        lut->rouge[i] = i+parametre;
-        lut->vert[i] = i+parametre;
-        lut->bleu[i] = i+parametre;
+    for (int i=0; i<=255; i++){
+        lut->rouge[i] += parametre;
+        lut->vert[i] += parametre;
+        lut->bleu[i] += parametre;
     }
 }
 
 void dimLum(Lut *lut, int parametre){
     for(int i=0; i<=255; i++){
-        lut->rouge[i] = i-parametre;
-        lut->vert[i] = i-parametre;
-        lut->bleu[i] = i-parametre;
+        lut->rouge[i] -= parametre;
+        lut->vert[i] -= parametre;
+        lut->bleu[i] -= parametre;
     }
 }
 
 void invert(Lut *lut){
     for(int i=0; i<=255; i++){
-        lut->rouge[i] = 255-i;
-        lut->vert[i] = 255-i;
-        lut->bleu[i] = 255-i;
+        lut->rouge[i] = 255-lut->rouge[i];
+        lut->vert[i] = 255-lut->vert[i];
+        lut->bleu[i] = 255-lut->bleu[i];
     }
 }
 
@@ -76,16 +85,16 @@ void seuil(Lut *lut){
 }
 
 void addCon(Lut *lut, int parametre){
-    int ajout;
     for(int i=0; i<=255; i++){
         if (i<128) {
-            ajout = i-parametre;
+            lut->rouge[i] -= parametre;
+            lut->vert[i] -= parametre;
+            lut->bleu[i] -= parametre;
         } else {
-            ajout = i+parametre;
+            lut->rouge[i] += parametre;
+            lut->vert[i] += parametre;
+            lut->bleu[i] += parametre;
         }
-        lut->rouge[i] = ajout;
-        lut->vert[i] = ajout;
-        lut->bleu[i] = ajout;
     }
 }
 

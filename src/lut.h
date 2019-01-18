@@ -20,6 +20,7 @@ typedef struct Lut {
 
 void appliqueLut(Image *image, Lut *lut);
 unsigned char convertToUnsignedChar(int num);
+void initializeLut(Lut *lut);
 void addLum(Lut *lut, int parametre);
 void dimLum(Lut *lut, int parametre);
 void invert(Lut *lut);

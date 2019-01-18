@@ -12,8 +12,8 @@ Image * initializeImage(FILE *i){
 	int largeur;
 
 	fscanf(i,"%s\n",code);
-	fscanf(i,"%d",&hauteur);
-	fscanf(i,"%d\n",&largeur);
+	fscanf(i,"%d",&largeur);
+	fscanf(i,"%d\n",&hauteur);
 
 	//alloue assez de place à l'image
 	image = malloc(sizeof(Image) + 3*hauteur*largeur*sizeof(unsigned char));
@@ -41,7 +41,7 @@ int newFileImage(char nom[], Image *image){
 
 	if (fichier != NULL){
 		fprintf(fichier,"%s\n",image->code);
-		fprintf(fichier,"%d %d\n",image->hauteur, image->largeur);
+		fprintf(fichier,"%d %d\n",image->largeur, image->hauteur);
 		fprintf(fichier,"%d\n",image->profondeur);
 		//fprintf(fichier,"%s","#Made by Andrea & Clara");
 		fwrite(image->pixels,sizeof(unsigned char),image->largeur*image->hauteur*3,fichier);
