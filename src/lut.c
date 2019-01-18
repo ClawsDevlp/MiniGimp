@@ -72,15 +72,14 @@ void sepia(Image *image){
 
 void seuil(Lut *lut){
     for(int i=0; i<=128; i++){
-        if (i<128) {
-            lut->rouge[i] = 0;
-            lut->vert[i] = 0;
-            lut->bleu[i] = 0;
-        } else {
-            lut->rouge[i] = 255;
-            lut->vert[i] = 255;
-            lut->bleu[i] = 255;
-        }
+        lut->rouge[i] = 0;
+        lut->vert[i] = 0;
+        lut->bleu[i] = 0;
+    }
+    for(int i=129; i<=255; i++){
+        lut->rouge[i] = 255;
+        lut->vert[i] = 255;
+        lut->bleu[i] = 255;
     }
 }
 
@@ -114,22 +113,17 @@ void dimCon(Lut *lut, int parametre){
 }*/
 
 void dimCon(Lut *lut, int parametre){
-    int ajout;
     for(int i=0; i<=255; i++){
         if (i<128) {
-            ajout = i+parametre;
-            if(ajout > 128){
-                ajout = 128;
-            }
+            lut->rouge[i] += parametre;
+            lut->vert[i] += parametre;
+            lut->bleu[i] += parametre;
         } else {
-            ajout = i-parametre;
-            if(ajout < 128){
-                ajout = 128;
-            }
+            lut->rouge[i] -= parametre;
+            lut->vert[i] -= parametre;
+            lut->bleu[i] -= parametre;
         }
-        lut->rouge[i] = ajout;
-        lut->vert[i] = ajout;
-        lut->bleu[i] = ajout;
+
     }
 }
 

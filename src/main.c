@@ -4,7 +4,7 @@
 #include "image.h"
 #include "lut.h"
 
-void creerHistogramme(Image *histogramme);
+void creerHistogramme(Image *histogramme, char nom[]);
 
 int main(int argc, char *argv[]){
 	if(argc < 1){
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 	// Gestion des options de commande
 	for(int i=2; i<argc; i++){
 		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-histo") == 0){
-			creerHistogramme(image);
+			creerHistogramme(image,"histogramme_DEBUT");
 		}
 		if(strcmp(argv[i],"ADDLUM") == 0) { addLum(&lut, atoi(argv[i+1])); }
 		if(strcmp(argv[i],"DIMLUM") == 0) { dimLum(&lut, atoi(argv[i+1])); }
@@ -51,6 +51,7 @@ int main(int argc, char *argv[]){
 	// Modification de l'image
 	appliqueLut(image, &lut);
 	newFileImage(nomImage, image);
+	creerHistogramme(image, "histogramme_FIN");
 	freeImage(image);
 
 	return EXIT_SUCCESS;
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]){
 
 
 // Creation de l'histogramme
-void creerHistogramme(Image *image){
+void creerHistogramme(Image *image, char nomHisto[]){
 	int moyenneValeurGris[256];
 	for(int j=0; j<256; j++){
 		moyenneValeurGris[j] = 0;
@@ -107,5 +108,6 @@ void creerHistogramme(Image *image){
 		}
 	}
 
-	newFileImage("histogramme.ppm", histo);
+	newFileImage(nomHisto, histo);
+	freeImage(histo);
 }
