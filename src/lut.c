@@ -77,18 +77,19 @@ void addCon(Lut *lut, int parametre){
     }
 }
 
-void seuil(Lut *lut){
-    for(int i=0; i<=128; i++){
-        lut->rouge[i] = 0;
-        lut->vert[i] = 0;
-        lut->bleu[i] = 0;
+/*void addCon(Lut *lut, int parametre){
+    for(int i=0; i<=255; i++){
+        if (i<128) {
+        lut->rouge[i] = i-parametre;
+        lut->vert[i] = i-parametre;
+        lut->bleu[i] = i-parametre;
+        } else {
+        lut->rouge[i] = i+parametre;
+        lut->vert[i] = i+parametre;
+        lut->bleu[i] = i+parametre;
+        }
     }
-    for(int i=129; i<=255; i++){
-        lut->rouge[i] = 255;
-        lut->vert[i] = 255;
-        lut->bleu[i] = 255;
-    }
-}
+}*/
 
 void dimCon(Lut *lut, int parametre){
     for(int i=0; i<=128; i++){
@@ -103,6 +104,20 @@ void dimCon(Lut *lut, int parametre){
     }
 }
 
+/*void dimCon(Lut *lut, int parametre){
+    for(int i=0; i<=255; i++){
+        if (i<128) {
+        lut->rouge[i] = i+parametre;
+        lut->vert[i] = i+parametre;
+        lut->bleu[i] = i+parametre;
+        } else {
+        lut->rouge[i] = i-parametre;
+        lut->vert[i] = i-parametre;
+        lut->bleu[i] = i-parametre;
+        }
+    }
+}*/
+
 void noirEtBlanc(Image *image){
     int gris;
     for(int i=0; i< image->hauteur; i++){
@@ -113,6 +128,19 @@ void noirEtBlanc(Image *image){
             image->pixels[image->largeur*3*i+3*j+2] = gris;
 		}
 	}
+}
+
+void seuil(Lut *lut){
+    for(int i=0; i<=128; i++){
+        lut->rouge[i] = 0;
+        lut->vert[i] = 0;
+        lut->bleu[i] = 0;
+    }
+    for(int i=129; i<=255; i++){
+        lut->rouge[i] = 255;
+        lut->vert[i] = 255;
+        lut->bleu[i] = 255;
+    }
 }
 
 
