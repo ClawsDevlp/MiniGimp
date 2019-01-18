@@ -3,9 +3,6 @@
 #include "lut.h"
 #include "image.h"
 
-#define max(a,b) (a>=b?a:b)
-#define min(a,b) (a<=b?a:b)
-
 
 void appliqueLut(Image *image, Lut *lut){
     for(int i=0; i< image->hauteur; i++){
@@ -57,66 +54,75 @@ void sepia(Image *image){
             rouge = image->pixels[image->largeur*3*i+3*j+0];
             vert = image->pixels[image->largeur*3*i+3*j+1];
             bleu = image->pixels[image->largeur*3*i+3*j+2];
-            image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(rouge*0.393 + vert*0.769 + bleu*0.189);
+            image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(rouge*0.493 + vert*0.769 + bleu*0.089);
             image->pixels[image->largeur*3*i+3*j+1] = convertToUnsignedChar(rouge*0.349 + vert*0.686 + bleu*0.168);
             image->pixels[image->largeur*3*i+3*j+2] = convertToUnsignedChar(rouge*0.272 + vert*0.534 + bleu*0.131);
 		}
 	}
 }
 
-void addCon(Lut *lut, int parametre){
+void seuil(Lut *lut){
     for(int i=0; i<=128; i++){
-        lut->rouge[i] = i-parametre;
-        lut->vert[i] = i-parametre;
-        lut->bleu[i] = i-parametre;
-    }
-    for(int i=128; i<=255; i++){
-        lut->rouge[i] = i+parametre;
-        lut->vert[i] = i+parametre;
-        lut->bleu[i] = i+parametre;
+        if (i<128) {
+            lut->rouge[i] = 0;
+            lut->vert[i] = 0;
+            lut->bleu[i] = 0;
+        } else {
+            lut->rouge[i] = 255;
+            lut->vert[i] = 255;
+            lut->bleu[i] = 255;
+        }
     }
 }
 
-/*void addCon(Lut *lut, int parametre){
+void addCon(Lut *lut, int parametre){
+    int ajout;
     for(int i=0; i<=255; i++){
         if (i<128) {
-        lut->rouge[i] = i-parametre;
-        lut->vert[i] = i-parametre;
-        lut->bleu[i] = i-parametre;
+            ajout = i-parametre;
         } else {
-        lut->rouge[i] = i+parametre;
-        lut->vert[i] = i+parametre;
-        lut->bleu[i] = i+parametre;
+            ajout = i+parametre;
+        }
+        lut->rouge[i] = ajout;
+        lut->vert[i] = ajout;
+        lut->bleu[i] = ajout;
+    }
+}
+
+/*
+void dimCon(Lut *lut, int parametre){
+    for(int i=0; i<=255; i++){
+        if (i<128) {
+            lut->rouge[i] = i+parametre;
+            lut->vert[i] = i+parametre;
+            lut->bleu[i] = i+parametre;
+        } else {
+            lut->rouge[i] = i-parametre;
+            lut->vert[i] = i-parametre;
+            lut->bleu[i] = i-parametre;
         }
     }
 }*/
 
 void dimCon(Lut *lut, int parametre){
-    for(int i=0; i<=128; i++){
-        lut->rouge[i] = i+parametre;
-        lut->vert[i] = i+parametre;
-        lut->bleu[i] = i+parametre;
-    }
-    for(int i=128; i<=255; i++){
-        lut->rouge[i] = i-parametre;
-        lut->vert[i] = i-parametre;
-        lut->bleu[i] = i-parametre;
-    }
-}
-
-/*void dimCon(Lut *lut, int parametre){
+    int ajout;
     for(int i=0; i<=255; i++){
         if (i<128) {
-        lut->rouge[i] = i+parametre;
-        lut->vert[i] = i+parametre;
-        lut->bleu[i] = i+parametre;
+            ajout = i+parametre;
+            if(ajout > 128){
+                ajout = 128;
+            }
         } else {
-        lut->rouge[i] = i-parametre;
-        lut->vert[i] = i-parametre;
-        lut->bleu[i] = i-parametre;
+            ajout = i-parametre;
+            if(ajout < 128){
+                ajout = 128;
+            }
         }
+        lut->rouge[i] = ajout;
+        lut->vert[i] = ajout;
+        lut->bleu[i] = ajout;
     }
-}*/
+}
 
 void noirEtBlanc(Image *image){
     int gris;
@@ -129,44 +135,3 @@ void noirEtBlanc(Image *image){
 		}
 	}
 }
-
-void seuil(Lut *lut){
-    for(int i=0; i<=128; i++){
-        lut->rouge[i] = 0;
-        lut->vert[i] = 0;
-        lut->bleu[i] = 0;
-    }
-    for(int i=129; i<=255; i++){
-        lut->rouge[i] = 255;
-        lut->vert[i] = 255;
-        lut->bleu[i] = 255;
-    }
-}
-
-
-/*tr = 0.393R + 0.769G + 0.189B
-tg = 0.349R + 0.686G + 0.168B
-tb = 0.272R + 0.534G + 0.131B
-*/
-
-
-
-
-
-
-//créer une fonction qui transforme l’image RGB en niveau de gris en utilisant 
-//cette formule sur les trois composants (RGB) du pixel : 
-//Gris = 0.299 Rouge + 0.587 Vert + 0.114 Bleu.
-/*void imageValeurGris(Image *image){
-    unsigned char niveauGris[image->largeur*image->hauteur*3];
-    int rouge; int vert; int bleu;
-
-    for(int i=0; i < image->largeur*image->hauteur; i++){
-        for(int j=0; j<3; j++){
-            sscanf("%d",&rouge);
-            sscanf("%d",&vert);
-            sscanf("%d",&bleu);
-            printf("%d",&rouge);
-        }
-    }
-}*/
