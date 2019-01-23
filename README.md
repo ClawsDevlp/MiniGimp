@@ -121,7 +121,7 @@ $ bin/minigimp images/mon_image.ppm -histo NOIRBLANC -o image_sortie.ppm
 * La fonction parcourt les pixels de l'image et les convertit en niveau de gris grâce à la formule suivante (source : https://www.dcode.fr/grayscale-image) :
 
 
-> Gris = Rouge*0.299 + Vert*0.587 + Bleu*0.114;
+> Gris = Rouge x 0.299 + Vert x 0.587 + Bleu x 0.114
 
 
 #### SEUIL 
