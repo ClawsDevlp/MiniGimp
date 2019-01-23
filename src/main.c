@@ -30,9 +30,13 @@ int main(int argc, char *argv[]){
 
 	// Gestion des options de commande
 	for(int i=2; i<argc; i++){
-		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-histo") == 0){
+		if(strcmp(argv[i], "-histo") == 0){
 			creerHistogramme(image,"histogramme_DEBUT");
 		}
+		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0){
+		}
+	}
+	for(int i=2; i<argc; i++){
 		if(strcmp(argv[i],"ADDLUM") == 0) { addLum(&lut, atoi(argv[i+1])); }
 		if(strcmp(argv[i],"DIMLUM") == 0) { dimLum(&lut, atoi(argv[i+1])); }
 		if(strcmp(argv[i],"ADDCON") == 0) { addCon(&lut, atoi(argv[i+1])); }

@@ -63,7 +63,7 @@ void sepia(Image *image){
             rouge = image->pixels[image->largeur*3*i+3*j+0];
             vert = image->pixels[image->largeur*3*i+3*j+1];
             bleu = image->pixels[image->largeur*3*i+3*j+2];
-            image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(rouge*0.493 + vert*0.769 + bleu*0.089);
+            image->pixels[image->largeur*3*i+3*j+0] = convertToUnsignedChar(rouge*0.593 + vert*0.669 + bleu*0.089);
             image->pixels[image->largeur*3*i+3*j+1] = convertToUnsignedChar(rouge*0.349 + vert*0.686 + bleu*0.168);
             image->pixels[image->largeur*3*i+3*j+2] = convertToUnsignedChar(rouge*0.272 + vert*0.534 + bleu*0.131);
 		}
@@ -123,8 +123,27 @@ void dimCon(Lut *lut, int parametre){
             lut->vert[i] -= parametre;
             lut->bleu[i] -= parametre;
         }
-
     }
+    /*
+        int ajout;
+    for(int i=0; i<=128; i++){
+        ajout = i+parametre;
+        if(ajout > 128){
+            ajout = 128;
+        }
+        lut->rouge[i] = ajout;
+        lut->vert[i] = ajout;
+        lut->bleu[i] = ajout;
+    }
+    for(int i=128; i<=255; i++){
+        ajout = i-parametre;
+        if(ajout < 128){
+            ajout = 128;
+        }
+        lut->rouge[i] = ajout;
+        lut->vert[i] = ajout;
+        lut->bleu[i] = ajout;
+    }*/
 }
 
 void noirEtBlanc(Image *image){
