@@ -34,6 +34,15 @@ int main(int argc, char *argv[]){
 			creerHistogramme(image,"histogramme_DEBUT");
 		}
 		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0){
+			printf("\n
+				- ADDLUM (+ paramètre) : permet d'augmenter la luminosité de l'image.\n
+				- DIMLUM (+ paramètre) : permet de diminuer la luminosité de l'image.\n
+				- ADDCON (+ paramètre) : permet d'augmenter le contraste de l'image.\n
+				- DIMCON (+ paramètre) : permet de diminuer le contraste de l'image.\n
+				- INVERT : permet d'inverser les couleurs de l'image.\n
+				- SEPIA : permet de créer un effet sépia.\n
+				- NOIRBLANC : permet de créer un effet noir et blanc.\n
+				- SEUIL : permet de créer un effet de seuil.\n")
 		}
 	}
 	for(int i=2; i<argc; i++){
