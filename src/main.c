@@ -4,7 +4,7 @@
 #include "image.h"
 #include "lut.h"
 
-void creerHistogramme(Image *histogramme, char nom[]);
+void createHistogram(Image *histogramme, char nom[]);
 
 int main(int argc, char *argv[]){
 	if(argc < 1){
@@ -31,27 +31,30 @@ int main(int argc, char *argv[]){
 	// Gestion des options de commande
 	for(int i=2; i<argc; i++){
 		if(strcmp(argv[i], "-histo") == 0){
-			creerHistogramme(image,"histogramme_DEBUT");
+			createHistogram(image,"histogramme_DEBUT");
 		}
 		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0){
-			printf("\n
-				- ADDLUM (+ paramètre) : permet d'augmenter la luminosité de l'image.\n
-				- DIMLUM (+ paramètre) : permet de diminuer la luminosité de l'image.\n
-				- ADDCON (+ paramètre) : permet d'augmenter le contraste de l'image.\n
-				- DIMCON (+ paramètre) : permet de diminuer le contraste de l'image.\n
-				- INVERT : permet d'inverser les couleurs de l'image.\n
-				- SEPIA : permet de créer un effet sépia.\n
-				- NOIRBLANC : permet de créer un effet noir et blanc.\n
-				- SEUIL : permet de créer un effet de seuil.\n")
+			printf("\n- ADDLUM (+ paramètre) : permet d'augmenter la luminosité de l'image.\n- DIMLUM (+ paramètre) : permet de diminuer la luminosité de l'image.\n- ADDCON (+ paramètre) : permet d'augmenter le contraste de l'image.\n- DIMCON (+ paramètre) : permet de diminuer le contraste de l'image.\n- INVERT : permet d'inverser les couleurs de l'image.\n- SEPIA : permet de créer un effet sépia.\n- NOIRBLANC : permet de créer un effet noir et blanc.\n- SEUIL : permet de créer un effet de seuil.\n");
 		}
 	}
 	for(int i=2; i<argc; i++){
 		if(strcmp(argv[i],"ADDLUM") == 0) { addLum(&lut, atoi(argv[i+1])); }
 		if(strcmp(argv[i],"DIMLUM") == 0) { dimLum(&lut, atoi(argv[i+1])); }
-		if(strcmp(argv[i],"ADDCON") == 0) { addCon(&lut, atoi(argv[i+1])); }
-		if(strcmp(argv[i],"DIMCON") == 0) { dimCon(&lut, atoi(argv[i+1])); }
+		if(strcmp(argv[i],"ADDCON") == 0) { 
+			if(atoi(argv[i+1]) > 255){
+				printf("Attention, vous avez mis un paramêtre supérieur à 255. Le contraste obtenu n'est pas garanti.\n");
+			}
+			addCon(&lut, atoi(argv[i+1])); 
+		}
+		if(strcmp(argv[i],"DIMCON") == 0) { 
+			if(atoi(argv[i+1]) > 255){
+				printf("Attention, vous avez mis un paramêtre supérieur à 255. Le contraste obtenu n'est pas garanti.\n");
+			}
+			dimCon(&lut, atoi(argv[i+1])); 
+		}
 		if(strcmp(argv[i],"INVERT") == 0) { invert(&lut); }
 		if(strcmp(argv[i],"SEPIA") == 0) { sepia(image); }
+		if(strcmp(argv[i],"MIROIR") == 0) { miroir(image); }
 		if(strcmp(argv[i],"SEUIL") == 0) { noirEtBlanc(image); seuil(&lut); }
 		if(strcmp(argv[i],"NOIRBLANC") == 0) { noirEtBlanc(image); }
 		if(strcmp(argv[i],"-o") == 0) { 
@@ -64,7 +67,7 @@ int main(int argc, char *argv[]){
 	// Modification de l'image
 	appliqueLut(image, &lut);
 	newFileImage(nomImage, image);
-	creerHistogramme(image, "histogramme_FIN");
+	createHistogram(image, "histogramme_FIN");
 	freeImage(image);
 
 	return EXIT_SUCCESS;
@@ -74,7 +77,7 @@ int main(int argc, char *argv[]){
 
 
 // Creation de l'histogramme
-void creerHistogramme(Image *image, char nomHisto[]){
+void createHistogram(Image *image, char nomHisto[]){
 	int moyenneValeurGris[256];
 	for(int j=0; j<256; j++){
 		moyenneValeurGris[j] = 0;
@@ -104,7 +107,7 @@ void creerHistogramme(Image *image, char nomHisto[]){
 	histo->profondeur = 255;
 
 	float coeffH = 1080.0/max;
-	float coeffL = 255/1920.0;
+	float coeffL = 256/1920.0;
 
 	for(int i=0; i<histo->hauteur; i++){
 		for (int j=0; j<histo->largeur; j++){

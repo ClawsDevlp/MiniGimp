@@ -23,6 +23,15 @@ unsigned char convertToUnsignedChar(int num){
     return (unsigned char) num;
 }
 
+unsigned char truncate(int num){
+    if (num < 0) {
+        num = 0;
+    } else if (num > 255) {
+        num = 255;
+    }
+    return num;
+}
+
 
 void initializeLut(Lut *lut){
     for (int i=0; i<=255; i++){
@@ -70,6 +79,23 @@ void sepia(Image *image){
 	}
 }
 
+void miroir(Image *image){
+    int tmpR; int tmpV; int tmpB;
+    for(int i=0; i< image->hauteur; i++){
+		for (int j=0; j< image->largeur/2; j++){
+            tmpR = image->pixels[image->largeur*3*i+3*j+0];
+            tmpV = image->pixels[image->largeur*3*i+3*j+1];
+            tmpB = image->pixels[image->largeur*3*i+3*j+2];
+            image->pixels[image->largeur*3*i+3*j+0] = image->pixels[image->largeur*3*i+(image->largeur-j)*3+0];
+            image->pixels[image->largeur*3*i+3*j+1] = image->pixels[image->largeur*3*i+(image->largeur-j)*3+1];
+            image->pixels[image->largeur*3*i+3*j+2] = image->pixels[image->largeur*3*i+(image->largeur-j)*3+2];
+            image->pixels[image->largeur*3*i+(image->largeur-j)*3+0] = tmpR;
+            image->pixels[image->largeur*3*i+(image->largeur-j)*3+1] = tmpV;
+            image->pixels[image->largeur*3*i+(image->largeur-j)*3+2] = tmpB;
+		}
+	}
+}
+
 void seuil(Lut *lut){
     for(int i=0; i<=128; i++){
         lut->rouge[i] = 0;
@@ -84,66 +110,23 @@ void seuil(Lut *lut){
 }
 
 void addCon(Lut *lut, int parametre){
+    float facteur = (259*(parametre+255))/(255*(259.-parametre));
     for(int i=0; i<=255; i++){
-        if (i<128) {
-            lut->rouge[i] -= parametre;
-            lut->vert[i] -= parametre;
-            lut->bleu[i] -= parametre;
-        } else {
-            lut->rouge[i] += parametre;
-            lut->vert[i] += parametre;
-            lut->bleu[i] += parametre;
-        }
+            lut->rouge[i] = truncate(facteur*(lut->rouge[i] -128) +128);
+            lut->vert[i] = truncate(facteur*(lut->vert[i] -128) +128);
+            lut->bleu[i] = truncate(facteur*(lut->bleu[i] -128) + 128);
+
     }
 }
 
-/*
 void dimCon(Lut *lut, int parametre){
+    float facteur = (259.*(-parametre+255))/(255*(259+parametre));
     for(int i=0; i<=255; i++){
-        if (i<128) {
-            lut->rouge[i] = i+parametre;
-            lut->vert[i] = i+parametre;
-            lut->bleu[i] = i+parametre;
-        } else {
-            lut->rouge[i] = i-parametre;
-            lut->vert[i] = i-parametre;
-            lut->bleu[i] = i-parametre;
-        }
-    }
-}*/
+            lut->rouge[i] = truncate(facteur*(lut->rouge[i] -128) +128);
+            lut->vert[i] = truncate(facteur*(lut->vert[i] -128) +128);
+            lut->bleu[i] = truncate(facteur*(lut->bleu[i] -128) +128);
 
-void dimCon(Lut *lut, int parametre){
-    for(int i=0; i<=255; i++){
-        if (i<128) {
-            lut->rouge[i] += parametre;
-            lut->vert[i] += parametre;
-            lut->bleu[i] += parametre;
-        } else {
-            lut->rouge[i] -= parametre;
-            lut->vert[i] -= parametre;
-            lut->bleu[i] -= parametre;
-        }
     }
-    /*
-        int ajout;
-    for(int i=0; i<=128; i++){
-        ajout = i+parametre;
-        if(ajout > 128){
-            ajout = 128;
-        }
-        lut->rouge[i] = ajout;
-        lut->vert[i] = ajout;
-        lut->bleu[i] = ajout;
-    }
-    for(int i=128; i<=255; i++){
-        ajout = i-parametre;
-        if(ajout < 128){
-            ajout = 128;
-        }
-        lut->rouge[i] = ajout;
-        lut->vert[i] = ajout;
-        lut->bleu[i] = ajout;
-    }*/
 }
 
 void noirEtBlanc(Image *image){

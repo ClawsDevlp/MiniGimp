@@ -25,6 +25,7 @@ void addLum(Lut *lut, int parametre);
 void dimLum(Lut *lut, int parametre);
 void invert(Lut *lut);
 void sepia(Image *image);
+void miroir(Image *image);
 void seuil(Lut *lut);
 void addCon(Lut *lut, int parametre);
 void dimCon(Lut *lut, int parametre);
