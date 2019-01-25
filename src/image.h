@@ -2,16 +2,17 @@
 #define IMAGE_H__
 
 typedef struct Image {
-	char code[2];
-	int hauteur;
-	int largeur;
-	int profondeur;
-	unsigned char pixels[];
+	char format[2];
+	int height;
+	int width;
+	int maxValue;
+	unsigned char pixelData[];
 } Image;
 
+
 Image * initializeImage(FILE *i);
-int newFileImage(char nom[], Image *image);
-int allocationImage(Image *image, int hauteur, int largeur);
+int newFileImage(char imageName[], Image *image);
 void freeImage(Image *image);
+
 
 #endif

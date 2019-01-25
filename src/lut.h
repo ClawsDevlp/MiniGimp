@@ -11,24 +11,27 @@
     SEPIA
 } lut;*/
 
-//LUT contient 3 couleurs R,G & B
+//LUT contains 3 colors : R,G & B
 typedef struct Lut {
-    int rouge[256];
-    int vert[256];
-    int bleu[256];
+    int red[256];
+    int green[256];
+    int blue[256];
 } Lut;
 
-void appliqueLut(Image *image, Lut *lut);
+
+void applyLut(Image *image, Lut *lut);
 unsigned char convertToUnsignedChar(int num);
+int truncate(int num);
 void initializeLut(Lut *lut);
-void addLum(Lut *lut, int parametre);
-void dimLum(Lut *lut, int parametre);
+void addLum(Lut *lut, int parameter);
+void dimLum(Lut *lut, int parameter);
 void invert(Lut *lut);
 void sepia(Image *image);
-void miroir(Image *image);
+void mirror(Image *image);
 void seuil(Lut *lut);
-void addCon(Lut *lut, int parametre);
-void dimCon(Lut *lut, int parametre);
-void noirEtBlanc(Image *image);
+void addCon(Lut *lut, int parameter);
+void dimCon(Lut *lut, int parameter);
+void blackWhite(Image *image);
+
 
 #endif

@@ -3,58 +3,58 @@
 #include <string.h>
 #include "image.h"
 
-// Initialisation de l'image
+// Initialize the image
 Image * initializeImage(FILE *i){
 	Image *image;
 
-	char code[2];
-	int hauteur;
-	int largeur;
+	char format[2];
+	int height;
+	int width;
 
-	fscanf(i,"%s\n",code);
-	fscanf(i,"%d",&largeur);
-	fscanf(i,"%d\n",&hauteur);
+	fscanf(i,"%s\n", format);
+	fscanf(i,"%d", &width);
+	fscanf(i,"%d\n", &height);
 
-	//alloue assez de place à l'image
-	image = malloc(sizeof(Image) + 3*hauteur*largeur*sizeof(unsigned char));
-	if (image==NULL) {
-		fprintf(stderr,"Not enough memory!\n");
+	//allocate enough space for the image
+	image = malloc(sizeof(Image) + 3*height*width*sizeof(unsigned char));
+	if (image == NULL) {
+		fprintf(stderr, "Not enough memory!\n");
 		exit(1);
 	}
 
-	strcpy(image->code, code);
-	fscanf(i,"%d\n",&image->profondeur);
-	image->hauteur = hauteur;
-	image->largeur = largeur;
+	strcpy(image->format, format);
+	fscanf(i, "%d\n", &image->maxValue);
+	image->height = height;
+	image->width = width;
 	
-	fread(image->pixels, sizeof (unsigned char), largeur*hauteur*3, i);
+	fread(image->pixelData, sizeof(unsigned char), width*height*3, i);
 
 	return image;
 }
 
-// Ecriture de la nouvelle image
-int newFileImage(char nom[], Image *image){
+// Writing of the new file image
+int newFileImage(char imageName[], Image *image){
 	FILE* fichier = NULL;
 	char new[40] = "images/";
-	strcat(new,nom);
+	strcat(new, imageName);
 	fichier = fopen(new, "w");
 
 	if (fichier != NULL){
-		fprintf(fichier,"%s\n",image->code);
-		fprintf(fichier,"%d %d\n",image->largeur, image->hauteur);
-		fprintf(fichier,"%d\n",image->profondeur);
-		//fprintf(fichier,"%s","#Made by Andrea & Clara");
-		fwrite(image->pixels,sizeof(unsigned char),image->largeur*image->hauteur*3,fichier);
+		fprintf(fichier, "%s\n", image->format);
+		fprintf(fichier, "%d %d\n", image->width, image->height);
+		fprintf(fichier, "%d\n", image->maxValue);
+		//fprintf(fichier, "%s", "#Made by Andrea & Clara");
+		fwrite(image->pixelData, sizeof(unsigned char), image->width*image->height*3, fichier);
 		fclose(fichier);
 	}
 	return EXIT_SUCCESS;
 }
 
-// Libere l'espace de l'image
+// Free image space
 void freeImage(Image *image) {
   if(image != NULL) {
-    image->largeur  = 0;
-    image->hauteur = 0;
+    image->width  = 0;
+    image->height = 0;
 	
 	free(image);
 	}
