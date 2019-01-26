@@ -8,6 +8,7 @@ void createHistogram(Image *image, char histoName[]);
 
 
 int main(int argc, char *argv[]){
+	// If no argument, can't charge file
 	if (argc < 1) {
 		printf("Une image est nécessaire pour continuer \n");
 		return EXIT_FAILURE;
@@ -72,6 +73,7 @@ int main(int argc, char *argv[]){
 			strcpy(imageName, argv[i+1]);
 		}
 	}
+	// END managing options
 
 
 	// Image modification
@@ -82,12 +84,10 @@ int main(int argc, char *argv[]){
 			createHistogram(image, "images/histo_FIN");
 		}
 	}
-
 	freeImage(image);
 
 	return EXIT_SUCCESS;
 }
-
 
 
 
@@ -96,24 +96,27 @@ void createHistogram(Image *image, char histoName[]){
 	int grayValuesAverage[256];
 	int maxValue = 0;
 
-	for (int j=0; j<256; j++) {
+	// Creating and filling of the gray values average table
+	for (int j=0; j < 256; j++) {
 		grayValuesAverage[j] = 0;
 	}
 
-    for (int i=0; i<image->height; i++) {
-		for (int j=0; j<image->width; j++) {
+    for (int i=0; i < image->height; i++) {
+		for (int j=0; j < image->width; j++) {
 			grayValuesAverage[image->pixelData[image->width*3*i+3*j+0]]++;
 			grayValuesAverage[image->pixelData[image->width*3*i+3*j+1]]++;
 			grayValuesAverage[image->pixelData[image->width*3*i+3*j+2]]++;
 		}
 	}
 
-	for (int h=0; h<256; h++) {
+	// Looking for the maximum of the gray values
+	for (int h=0; h < 256; h++) {
 		if (maxValue < grayValuesAverage[h]) {
 			maxValue = grayValuesAverage[h];
 		}
 	}
 
+	// Creating the histogram image
 	Image *histo;
 	histo = malloc(sizeof(Image) + 3*1920*1080*sizeof(unsigned char));
 	strcpy(histo->format, "P6");
@@ -124,9 +127,11 @@ void createHistogram(Image *image, char histoName[]){
 	float coeffH = 1080.0/maxValue;
 	float coeffL = 256/1920.0;
 
-	for (int i=0; i<histo->height; i++) {
-		for (int j=0; j<histo->width; j++) {
+	// Drawing the histogram
+	for (int i=0; i < histo->height; i++) {
+		for (int j=0; j < histo->width; j++) {
 			int indiceTab = (int)j*coeffL;
+
 			if (i < histo->height - grayValuesAverage[indiceTab]*coeffH) {
 				histo->pixelData[histo->width*3*i+3*j+0] = 255;
 				histo->pixelData[histo->width*3*i+3*j+1] = 255;
