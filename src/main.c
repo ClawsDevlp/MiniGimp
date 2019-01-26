@@ -25,14 +25,14 @@ int main(int argc, char *argv[]){
 	Image *image = initializeImage(i);
 	fclose(i);
 	Lut lut;
-	char imageName[200] = "output.ppm";
+	char imageName[200] = "images/output.ppm";
 	initializeLut(&lut);
 
 
-	// Managing command options
+	// Managing options
 	for (int i=2; i < argc; i++) {
 		if (strcmp(argv[i], "-histo") == 0) {
-			createHistogram(image, "histogramme_DEBUT");
+			createHistogram(image, "images/histo_DEBUT");
 		}
 		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0){
 			printf("\n- ADDLUM (+ paramètre) : augmente la luminosité de l'image.\n");
@@ -77,7 +77,12 @@ int main(int argc, char *argv[]){
 	// Image modification
 	applyLut(image, &lut);
 	newFileImage(imageName, image);
-	createHistogram(image, "histogramme_FIN");
+	for (int i=2; i < argc; i++) {
+		if (strcmp(argv[i], "-histo") == 0) {
+			createHistogram(image, "images/histo_FIN");
+		}
+	}
+
 	freeImage(image);
 
 	return EXIT_SUCCESS;

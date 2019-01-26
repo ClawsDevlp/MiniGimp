@@ -35,15 +35,13 @@ Image * initializeImage(FILE *i){
 // Writing of the new file image
 int newFileImage(char imageName[], Image *image){
 	FILE* fichier = NULL;
-	char new[40] = "images/";
-	strcat(new, imageName);
-	fichier = fopen(new, "w");
+	fichier = fopen(imageName, "w");
 
 	if (fichier != NULL){
 		fprintf(fichier, "%s\n", image->format);
+		fprintf(fichier, "%s", "#Made by Andrea & Clara with love\n");
 		fprintf(fichier, "%d %d\n", image->width, image->height);
 		fprintf(fichier, "%d\n", image->maxValue);
-		//fprintf(fichier, "%s", "#Made by Andrea & Clara");
 		fwrite(image->pixelData, sizeof(unsigned char), image->width*image->height*3, fichier);
 		fclose(fichier);
 	}
