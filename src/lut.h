@@ -2,14 +2,6 @@
 #define LUT_H__
 #include "image.h"
 
-/*typedef enum {
-    ADDLUM,
-    DIMLUM,
-    ADDCON,
-    DIMCON,
-    INVERT,
-    SEPIA
-} lut;*/
 
 //LUT contains 3 colors : R,G & B
 typedef struct Lut {
