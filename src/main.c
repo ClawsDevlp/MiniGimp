@@ -38,8 +38,8 @@ int main(int argc, char *argv[]){
 		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0){
 			printf("\n- ADDLUM (+ paramètre) : augmente la luminosité de l'image.\n");
 			printf("- DIMLUM (+ paramètre) : diminue la luminosité de l'image.\n");
-			printf("- ADDCON (+ paramètre) : augmente le contraste de l'image (paramètre entre 0 et 255).\n");
-			printf("- DIMCON (+ paramètre) : diminue le contraste de l'image (paramètre entre 0 et 255).\n");
+			printf("- ADDCON (+ paramètre entre 0 et 255) : augmente le contraste de l'image.\n");
+			printf("- DIMCON (+ paramètre entre 0 et 255) : diminue le contraste de l'image.\n");
 			printf("- INVERT : inverse les couleurs de l'image.\n");
 			printf("- SEPIA : applique un effet sépia.\n");
 			printf("- MIROIR : applique un effet miroir.\n");
